@@ -1,25 +1,83 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import './App.css';
 
+var data = [{name: '1:00', value: 40},
+            {name: '2:00', value: 20},
+            {name: '3:00', value: 10},
+            {name: '4:00', value: 10},
+            {name: '5:00', value: 15},
+            {name: '6:00', value: 50},
+           ];
+/*
+*/
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      items: []
+    }
+  }
+
+  componentDidMount() {
+    fetch("http://nodes.prod1.kube.tstllc.net:30900/api/v1/query_range?query=tst_bookings{product=%22Air%22,status=%22Confirmed%22}&start=2019-01-01T20:10:30.000Z&end=2019-01-25T20:10:30.000Z&step=86400s")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log('Success!');
+          console.log('DATA', result.data.result[0].values);
+          let data = result.data.result[0].values.map((d, i, arr) => {
+            let dt = new Date(d[0] * 1000);
+            //let t  = dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
+            let t  = (dt.getMonth() + 1) + '/' + dt.getDate();
+            let v  = d[1];
+            let vo = arr[i - 1] ? arr[i - 1][1] : v;
+            let vd = v - vo;
+            console.log('Date: ', dt);
+            console.log('t: ', t);
+            console.log('v: ', v);
+            console.log('vo: ', vo);
+            console.log('vd: ', vd);
+            return {
+              //name: d[0],
+              name: t,
+              value: vd};
+          })
+          //console.log('DATA', data);
+          this.setState({
+            isLoaded: true,
+            //items: result.result[0]
+            items: data
+          });
+        },
+        (error) => {
+          console.log('Error!');
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <ResponsiveContainer width='100%' height={300}>
+          <LineChart
+            cx="50%"
+            cy="50%"
+            outerRadius="80%"
+            data={this.state.items}
+            >
+            <XAxis dataKey="name" />
+            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Line dataKey="value" />
+            </LineChart>
+        </ResponsiveContainer>
       </div>
     );
   }
