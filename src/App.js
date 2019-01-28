@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Label, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
 import './App.css';
 
 var data = [{name: '1:00', value: 40},
@@ -9,8 +9,7 @@ var data = [{name: '1:00', value: 40},
             {name: '5:00', value: 15},
             {name: '6:00', value: 50},
            ];
-/*
-*/
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +21,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch("http://nodes.prod1.kube.tstllc.net:30900/api/v1/query_range?query=tst_bookings{product=%22Air%22,status=%22Confirmed%22}&start=2019-01-01T20:10:30.000Z&end=2019-01-25T20:10:30.000Z&step=86400s")
+    let url = "http://nodes.prod1.kube.tstllc.net:30900/api/v1/query_range?" +
+    "query=tst_bookings{product=%22Air%22,status=%22Confirmed%22}&" +
+    "start=2019-01-01T20:10:30.000Z&end=2019-01-25T20:10:30.000Z&step=86400s";
+
+    fetch(url)
       .then(res => res.json())
       .then(
         (result) => {
@@ -65,18 +68,39 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <ResponsiveContainer width='100%' height={300}>
+        <ResponsiveContainer width='50%' height={300}>
           <LineChart
             cx="50%"
             cy="50%"
             outerRadius="80%"
+            margin={{top: 20, right: 10, left: 10, bottom: 50}}
             data={this.state.items}
             >
-            <XAxis dataKey="name" />
+            <XAxis dataKey="name">
+              <Label value="Date" position="bottom"/>
+            </XAxis>
             <YAxis />
             <CartesianGrid strokeDasharray="3 3" />
             <Line dataKey="value" />
-            </LineChart>
+            <Legend verticalAlign="top" height={20} />
+          </LineChart>
+        </ResponsiveContainer>
+
+        <ResponsiveContainer width='50%' height={300}>
+          <LineChart
+            cx="50%"
+            cy="50%"
+            outerRadius="80%"
+            margin={{top: 20, right: 10, left: 10, bottom: 50}}
+            data={this.state.items}
+            >
+            <XAxis dataKey="name">
+              <Label value="Date" position="bottom"/>
+            </XAxis>
+            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Line dataKey="value" />
+          </LineChart>
         </ResponsiveContainer>
       </div>
     );
