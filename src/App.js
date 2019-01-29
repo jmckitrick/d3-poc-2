@@ -166,7 +166,7 @@ class App extends Component {
               <Line dataKey="Insurance" legendType="circle" stroke="cyan" />
               <Line dataKey="Prepackaged" legendType="circle" stroke="magenta" />
               <Line dataKey="Other" legendType="circle" stroke="violet" />
-              <Legend verticalAlign="top" height={20} margin={{ top: 20, left: 0, right: 0, bottom: 20 }}/>
+              <Legend verticalAlign="top" height={20} wrapperStyle={{ top: 0, left: 60, right: 0, bottom: 0 }}/>
               <Tooltip/>
             </LineChart>
           </ResponsiveContainer>
