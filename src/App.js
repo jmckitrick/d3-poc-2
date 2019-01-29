@@ -103,7 +103,11 @@ class App extends Component {
       'Air',
       'Car',
       'Hotel',
-      'Cruise'
+      'Cruise',
+      'Activity',
+      'Insurance',
+      'Prepackaged',
+      'Other'
     ];
 
     var reqs = products.map(product => {
@@ -158,6 +162,10 @@ class App extends Component {
               <Line dataKey="Car" legendType="circle" stroke="red" />
               <Line dataKey="Hotel" legendType="circle" stroke="orange" />
               <Line dataKey="Cruise" legendType="circle" stroke="green" />
+              <Line dataKey="Activity" legendType="circle" stroke="purple" />
+              <Line dataKey="Insurance" legendType="circle" stroke="cyan" />
+              <Line dataKey="Prepackaged" legendType="circle" stroke="magenta" />
+              <Line dataKey="Other" legendType="circle" stroke="violet" />
               <Legend verticalAlign="top" height={20} margin={{ top: 20, left: 0, right: 0, bottom: 20 }}/>
               <Tooltip/>
             </LineChart>
