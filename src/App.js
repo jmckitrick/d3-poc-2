@@ -24,7 +24,7 @@ class App extends Component {
         "}&" +
         // "start=" + year + "-01-01T00:00:00.000Z&" +
         // "end=" + year + "-01-31T00:00:00.000Z&" +
-        "start=" + year + "-01-26T00:00:00.000Z&" +
+        "start=" + year + "-01-28T00:00:00.000Z&" +
         "end=" + year + "-01-29T00:00:00.000Z&" +
         //"step=86400s"
         "step=3600s"
@@ -72,26 +72,26 @@ class App extends Component {
       var product = data.metric.product;
       var vals = data.values;
       //console.log('DATA', data);
-      console.log('Product', product);
-      console.log('Values', vals);
+      //console.log('Product', product);
+      //console.log('Values', vals);
       var productData = this.extractData(vals, product);
-      console.log('Product data before', productData);
+      //console.log('Product data before', productData);
       var pd = productData.map((d, i) => {
-        console.log('product row index', i)
-        console.log('product row d', d)
+        //console.log('product row index', i)
+        //console.log('product row d', d)
         if (accum[i]) {
-          console.log('accum[i]', accum[i])
+          //console.log('accum[i]', accum[i])
         }
         var row = accum[i] ? accum[i] : {};
-        console.log('row before', row);
+        //console.log('row before', row);
         row.t = d ? d.t : null;
         row[product] = d ? d[product] : null;
-        console.log('row after', row);
+        //console.log('row after', row);
         return row;
       });
 
-      console.log('Product data after', pd);
-      console.log('idx', idx);
+      //console.log('Product data after', pd);
+      //console.log('idx', idx);
       accum = pd;
 
       return accum;
@@ -145,15 +145,12 @@ class App extends Component {
           <h1>Bookings</h1>
           <ResponsiveContainer width='100%' height={600}>
             <LineChart
-              cx="50%"
-              cy="50%"
-              outerRadius="80%"
-              margin={{top: 20, right: 80, left: 80, bottom: 50}}
+              margin={{top: 10, right: 80, left: 80, bottom: 20}}
               data={this.state.items}>
               <XAxis dataKey="t">
-                <Label value="Date" position="bottom"/>
+                <Label value="Hour" position="bottom"/>
               </XAxis>
-              <YAxis>
+              <YAxis type="number" domain={[0, 'dataMax + 2']}>
                 <Label value="Bookings" position="left"/>
               </YAxis>
               <CartesianGrid strokeDasharray="3 3" />
@@ -161,7 +158,7 @@ class App extends Component {
               <Line dataKey="Car" legendType="circle" stroke="red" />
               <Line dataKey="Hotel" legendType="circle" stroke="orange" />
               <Line dataKey="Cruise" legendType="circle" stroke="green" />
-              <Legend verticalAlign="top" height={20} />
+              <Legend verticalAlign="top" height={20} margin={{ top: 20, left: 0, right: 0, bottom: 20 }}/>
               <Tooltip/>
             </LineChart>
           </ResponsiveContainer>
