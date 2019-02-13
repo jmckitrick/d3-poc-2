@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { LineChart, Line, XAxis, YAxis, Label, Legend, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
 import './App.css';
+import data from './data';
 
 class App extends Component {
   constructor(props) {
     super(props);
+    console.log('HERE!', data);
     this.state = {
       error: null,
       isLoaded: false,
@@ -15,17 +17,13 @@ class App extends Component {
   buildUrl(product) {
     var now = new Date();
     var year = now.getFullYear();
-    //var month = now.getMonth();
-    //var day = now.getDate();
     var url = "http://nodes.prod1.kube.tstllc.net:30900/api/v1/query_range?" +
         "query=tst_bookings{" +
         "status=%22Confirmed%22" +
         ",product=%22" + product + "%22" +
         "}&" +
-        // "start=" + year + "-01-01T00:00:00.000Z&" +
-        // "end=" + year + "-01-31T00:00:00.000Z&" +
-        "start=" + year + "-01-28T00:00:00.000Z&" +
-        "end=" + year + "-01-29T00:00:00.000Z&" +
+        "start=" + year + "-02-12T00:00:00.000Z&" +
+        "end=" + year + "-02-13T00:00:00.000Z&" +
         //"step=86400s"
         "step=3600s"
     ;
@@ -37,23 +35,14 @@ class App extends Component {
     var data = raw.map((d, i, arr) => {
       if (i > 0) {
         var dt = new Date(d[0] * 1000);
-        //var t  = dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
-        //var t  = (dt.getMonth() + 1) + '/' + dt.getDate();
         var h = dt.getHours();
         var v  = d[1];
         var vo = arr[i - 1] ? arr[i - 1][1] : v;
         var vd = v - vo;
-        // console.log('Date: ', dt);
-        // console.log('t: ', t);
-        // console.log('v: ', v);
-        // console.log('vo: ', vo);
-        // console.log('vd: ', vd);
         var row = {t: h};
         row[product] = vd;
+
         return row;
-        // return {
-        //   t: h,
-        //   product: vd};
       }
       else {
         return null;
