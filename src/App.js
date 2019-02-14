@@ -6,7 +6,12 @@ import data from './data';
 class App extends Component {
   constructor(props) {
     super(props);
-    console.log('HERE!', data);
+    console.log('DATA', data);
+    var hotelMin = data.Hotel.map(d => {
+      return d.min;
+    });
+    console.log('HOTELMIN', hotelMin);
+
     this.state = {
       error: null,
       isLoaded: false,
@@ -31,6 +36,7 @@ class App extends Component {
     return url;
   }
 
+  // Extract `product` data from `raw` data.
   extractData(raw, product) {
     var data = raw.map((d, i, arr) => {
       if (i > 0) {
@@ -71,16 +77,19 @@ class App extends Component {
         if (accum[i]) {
           //console.log('accum[i]', accum[i])
         }
+
         var row = accum[i] ? accum[i] : {};
         //console.log('row before', row);
         row.t = d ? d.t : null;
         row[product] = d ? d[product] : null;
+        //var k = product + '.d';
+        //row[k] = d ? d[product] : null;
         //console.log('row after', row);
         return row;
       });
 
-      //console.log('Product data after', pd);
-      //console.log('idx', idx);
+      console.log('Product data after', pd);
+      console.log('idx', idx);
       accum = pd;
 
       return accum;
@@ -147,14 +156,14 @@ class App extends Component {
                 <Label value="Bookings" position="left"/>
               </YAxis>
               <CartesianGrid strokeDasharray="3 3" />
-              <Line dataKey="Air" legendType="circle" stroke="blue" />
-              <Line dataKey="Car" legendType="circle" stroke="red" />
+              {/* <Line dataKey="Air" legendType="circle" stroke="blue" /> */}
+              {/* <Line dataKey="Car" legendType="circle" stroke="red" /> */}
               <Line dataKey="Hotel" legendType="circle" stroke="orange" />
-              <Line dataKey="Cruise" legendType="circle" stroke="green" />
-              <Line dataKey="Activity" legendType="circle" stroke="purple" />
-              <Line dataKey="Insurance" legendType="circle" stroke="cyan" />
-              <Line dataKey="Prepackaged" legendType="circle" stroke="magenta" />
-              <Line dataKey="Other" legendType="circle" stroke="violet" />
+              {/* <Line dataKey="Cruise" legendType="circle" stroke="green" /> */}
+              {/* <Line dataKey="Activity" legendType="circle" stroke="purple" /> */}
+              {/* <Line dataKey="Insurance" legendType="circle" stroke="cyan" /> */}
+              {/* <Line dataKey="Prepackaged" legendType="circle" stroke="magenta" /> */}
+              {/* <Line dataKey="Other" legendType="circle" stroke="violet" /> */}
               <Legend verticalAlign="top" height={20} wrapperStyle={{ top: 0, left: 60, right: 0, bottom: 0 }}/>
               <Tooltip/>
             </LineChart>
